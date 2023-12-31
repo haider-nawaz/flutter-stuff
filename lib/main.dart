@@ -11,6 +11,7 @@ import 'package:reels/flex_example.dart';
 import 'package:reels/home_page.dart';
 import 'package:reels/isolate_example.dart';
 import 'package:reels/plant_page.dart';
+import 'package:reels/todo_app.dart';
 
 void main() async {
   Animate.restartOnHotReload = true;
@@ -55,9 +56,55 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Scaffold(
-          backgroundColor: Colors.black,
-          body: SafeArea(child: Center(child: FlexExample()))),
+      home: Scaffold(
+        extendBody: true,
+        bottomNavigationBar: bottomNav(),
+        //backgroundColor: Colors.white,
+        body: SafeArea(
+          bottom: false,
+          child: TasksView(),
+        ),
+      ),
+    );
+  }
+
+  ClipRRect bottomNav() {
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topRight: Radius.circular(30),
+        topLeft: Radius.circular(30),
+      ),
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.black,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        selectedIconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        unselectedIconTheme: const IconThemeData(
+          color: Colors.white70,
+        ),
+        iconSize: 30,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.feed),
+            label: "Settings",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "Settings",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Profile",
+          ),
+        ],
+      ),
     );
   }
 
@@ -286,5 +333,34 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+}
+
+class CurvePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint();
+    paint.color = const Color(0xff55096C);
+    paint.style = PaintingStyle.fill;
+
+    var path = Path();
+
+    path.moveTo(0, size.height * 0.8264);
+    path.quadraticBezierTo(
+      size.width * 0.5,
+      size.height * 0.875,
+      size.width * 1,
+      size.height * 0.9584,
+    );
+
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
   }
 }
